@@ -37,7 +37,7 @@ app.use(cookieParser());
 hbs.registerHelper('dbConnection', function(req,res) {
 	var url = "mongodb://localhost:27017/accounts";
 	return url;
-})
+});
 
 // session used for tracking logins
 app.use(session({
@@ -289,7 +289,7 @@ app.post('/trading-success-search', isAuthenticated, (request, response) => {
 		response.render('trading-success.hbs', {
 				title: message
 				})
-	}
+	};
 	get_stock_info(stock);
 });
 
@@ -449,7 +449,7 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 		}
 		response.render('trading-success.hbs', {
 			title: message
-		})		
+		});
 
 		function check_existence(stock) {
 			var index = -1;
@@ -461,7 +461,7 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 			}
 			return index;
 		}
-	}
+	};
 	sell_stock();
 });
 
