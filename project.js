@@ -14,6 +14,7 @@ var utils = require('./utils');
 var cookieParser = require('cookie-parser');
 var ObjectID = require('mongodb').ObjectID;
 var assert = require('assert');
+const bcrypt = require('bcrypt');
 
 hbs.registerPartials(__dirname + '/views/partials');
 module.exports = app;
@@ -27,6 +28,7 @@ var app = express();
 
 app.set('view engine', 'hbs');
 
+app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -133,11 +135,19 @@ app.post('/login-fail',
 
 // allows for success of logging in
 passport.use(new LocalStrategy(
+
   function(username, password, done) {
     user_account.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
-      if (user.password != password) { return done(null, false); }
+      // if (user.password != password) { return done(null, false); }
+	  bcrypt.compare(password, user.password, function(err, res) {
+		  if(res) {
+		  	return done(null, user);
+		  } else {
+		  	return done(null, false);
+		  }
+		});
       return done(null, user);
     });
   }
@@ -195,22 +205,27 @@ app.post('/register', function(request, response) {
 		db.collection('user_accounts').findOne({username: username}, function(err, result) {
 
 			if (result === null) {
-				db.collection('user_accounts').insertOne({
-					firstname: firstname,
-					lastname: lastname,
-					username: username,
-					password: password,
-					type: 'standard',
-					cash2: [10000],
-					stocks: []
-
-				}, (err, result) => {
-					if (err) {
-						messsage = `There was an error in creating your account. Please try again.`;
-						response.render('registration.hbs', {title: `There was an error in creating your account. Please try again.`});
-					}
-					message = `You have successfully created an account with the username '${username}' and have been granted $10,000 USD. Head over to the login page.`;
-					response.render('registration.hbs', {title: message});
+					db.collection('user_accounts').insertOne({
+						firstname: firstname,
+						lastname: lastname,
+						username: username,
+						password: password,
+						type: 'standard',
+						cash2: [10000],
+						stocks: []
+					}, (err, result) => {
+						if (err) {
+							messsage = `There was an error in creating your account. Please try again.`;
+							response.render('registration.hbs', {title: `There was an error in creating your account. Please try again.`});
+						}
+						message = `You have successfully created an account with the username '${username}' and have been granted $10,000 USD. Head over to the login page.`;
+						response.render('registration.hbs', {title: message});
+					})
+					bcrypt.hash(password, 10, function(err, hash){
+						db.collection('user_accounts').updateOne(
+											{ "firstname": firstname},
+											{ $set: { "password": hash}}
+					);
 				});
 			}
 			else {
@@ -218,7 +233,6 @@ app.post('/register', function(request, response) {
 				response.render('registration.hbs', {title: `The username '${username}' already exists within the system.`});
 			}
 		}
-
 	)};
 });
 
@@ -259,6 +273,56 @@ app.get('/trading-success', isAuthenticated, (request, response) => {
 	response.render('trading-success.hbs', {
 		title: 'Welcome to the trading page.'
 	})
+});
+
+app.get('/profile', isAuthenticated, (request, response) => {
+	var firstname = request.session.passport.user.firstname;
+	var lastname = request.session.passport.user.lastname;
+
+	response.render('profile.hbs', {
+		title: 'Edit Profile',
+		firstname: firstname,
+		lastname: lastname,
+
+	})
+});
+
+app.post('/profile', function(request, response) {
+	var firstname = request.body.firstname;
+	var lastname = request.body.lastname;
+	var username = request.session.passport.user.username
+	var message;
+	var db = utils.getDb();
+	var attributes = [firstname, lastname];
+	var check;
+
+	if (check_str(attributes[0]) === false) {
+		message = `First name must be 3-30 characters long and must only contain letters.`;
+		response.render('profile.hbs', {title: message});
+	}
+	else if (check_str(attributes[1]) === false) {
+		message = `Last name must be 3-30 characters long and must only contain letters.`;
+		response.render('profile.hbs', {title: message});
+	}
+	else {
+		check = true;
+	}
+
+	if (check) {
+	db.collection('user_accounts').updateOne(
+				{username: username}, 
+				{ $set: { "firstname": firstname, "lastname": lastname}}
+	)
+			response.render('profile.hbs', {
+				title: "Profile Updated Sucessfully",
+				firstname: firstname,
+				lastname: lastname
+			})}
+
+	else {
+		message = `An error has occured.`;
+		response.render('profile.hbs', {title: message});
+	}	
 });
 
 app.post('/trading-success-search', isAuthenticated, (request, response) => {
@@ -598,6 +662,8 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 			};
 		};
 });
+
+
 
 // app.get('/admin-success-update-balances', isAdmin, function(req, res, next) {
 // 	res.render('admin-success-update-balances.hbs', {

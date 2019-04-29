@@ -22,7 +22,7 @@
         <div class="defmenu">
             <div class='list-group'>
                 <a href="logout" class="list-group-item">Logout</a>
-                <a href="registration-logged-in" class="list-group-item">Registration</a>
+                <a href="profile" class="list-group-item">Profile</a>
                 <a href="trading-success" class="list-group-item">Trading</a>
                 <a href="admin-success" class="list-group-item list-group-item-info">Admin Panel</a>
             </div>
@@ -35,12 +35,12 @@
             <form action="/admin-success-update-balances-success" method="POST">
                 <div class="row">
                     <div class="col">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" name="username" id="username" placeholder="username">
+                        <label for="stocksearch">User ID</label>
+                        <input type="text" class="form-control" name="buystockticker" id="buystockticker" placeholder="User ID">
                     </div>
                     <div class="col">
-                        <label for="user_balance">Balance</label>
-                      <input type="number" class="form-control" name="user_balance" id="user_balance" placeholder="Balance">
+                        <label for="stocksearch">Balance</label>
+                      <input type="number" class="form-control" name="buystockqty" id="buystockqty" placeholder="Balance">
                     </div>
                 </div>
                 <p>&nbsp;</p>

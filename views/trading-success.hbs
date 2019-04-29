@@ -23,7 +23,7 @@
         <div class="defmenu">
             <div class='list-group'>
                 <a href="logout" class="list-group-item">Logout</a>
-                <a href="registration-logged-in" class="list-group-item">Registration</a>
+                <a href="profile" class="list-group-item">Profile</a>
                 <a href="trading-success" class="list-group-item list-group-item-info">Trading</a>
                 <a href="admin-success" class="list-group-item">Admin Panel</a>
             </div>
@@ -32,7 +32,34 @@
         <div class="defcontent">
             <br>
             <div class='chfont container'>
-                
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+  {
+  "symbols": [
+    {
+      "description": "Amazon.com Inc.",
+      "proName": "NASDAQ:AMZN"
+    },
+    {
+      "description": "Alphabet Inc.",
+      "proName": "NASDAQ:GOOG"
+    },
+    {
+      "description": "Microsoft Corporation",
+      "proName": "NASDAQ:MSFT"
+    },
+    {
+      "description": "Apple Inc.",
+      "proName": "NASDAQ:AAPL"
+    }
+  ],
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->                
                 <p class="font-italic">Please note all prices are in USD.</p>
                 <p class="font-weight-bold">{{title}}</p>
                 <p class="font-weight-bold">{{head}}</p>
@@ -55,11 +82,11 @@
                   <div class="row">
                     <div class="col">
                         <label for="stocksearch">Buy Stock</label>
-                      <input type="text" class="form-control" name="buystockticker" id="buystockticker" placeholder="Stock">
+                      <input type="text" class="form-control" name="buystockticker" id="buystockticker" placeholder="Enter Stock Ticker e.g FB">
                     </div>
                     <div class="col">
                         <label for="stocksearch">Quantity</label>
-                      <input type="number" class="form-control" name="buystockqty" id="buystockqty" placeholder="Quantity">
+                      <input type="number" class="form-control" name="buystockqty" id="buystockqty" placeholder="Enter Stock Ticker e.g FB">
                     </div>
                   </div>
                   <p>&nbsp;</p>
@@ -71,11 +98,11 @@
                 <div class="row">
                     <div class="col">
                         <label for="stocksearch">Sell Stock</label>
-                      <input type="text" class="form-control" name="sellstockticker" id="sellstockticker" placeholder="Stock">
+                      <input type="text" class="form-control" name="sellstockticker" id="sellstockticker" placeholder="Enter Stock Ticker e.g FB">
                     </div>
                     <div class="col">
                         <label for="stocksearch">Quantity</label>
-                      <input type="number" class="form-control" name="sellstockqty" id="sellstockqty" placeholder="Quantity">
+                      <input type="number" class="form-control" name="sellstockqty" id="sellstockqty" placeholder="Enter Stock Ticker e.g FB">
                     </div>
                   </div>
                   <p>&nbsp;</p>
@@ -104,7 +131,7 @@
 
         </div>
         <footer class="chfont page-footer font-small blue">
-            <div class="footer-copyright text-center py-3">© 2010 Copyright:
+            <div class="footer-copyright text-center py-3">© 2019 Copyright:
             <a href="">Stock Trader</a>  All Rights Reserved
 
         </footer>
