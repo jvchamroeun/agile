@@ -1,0 +1,32 @@
+.inputbox {
+	max-width: 20rem;
+	margin-top: 9%;
+	margin-bottom: 5%;
+	margin-left: 5%
+}
+
+.row{
+	margin-top: 3rem;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  	margin-bottom: 4rem;
+}
+
+.footer {
+	text-align: center;
+  	position: absolute;
+  	bottom: 0;
+  	width: 100%;
+  	height: 4rem;
+  	line-height: 4rem;
+
+}
+.card{
+	width: 30rem;
+}

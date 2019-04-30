@@ -91,20 +91,23 @@ const user_account = mongoose.model("user_accounts", account_schema);
 
 app.get('/', (request, response) => {
 	response.render('login.hbs', {
-		title: 'Welcome to the login page.'
+        title: 'Welcome to the login page.',
+        title2: 'To create an account please enter credentials.'
 	})
 });
 
 app.get('/login', (request, response) => {
 	response.render('login.hbs', {
-		title: 'Welcome to the login page.'
+		title: 'Welcome to the login page.',
+		title2: 'To create an account please enter credentials.'
 	})
 });
 
 // if login credentials are invalid
 app.get('/login-fail', (request, response) => {
 	response.render('login.hbs', {
-		title: 'You have entered an invalid username or password. Please try again or create a new account.'
+		title: 'You have entered an invalid username or password. Please try again or create a new account.',
+        title2: 'To create an account please enter credentials.'
 	})
 });
 
@@ -153,11 +156,11 @@ passport.use(new LocalStrategy(
   }
 ));
 
-app.get('/register', (request, response) => {
-	response.render('registration.hbs', {
-		title: 'To create an account please enter credentials.'
-	})
-});
+// app.get('/register', (request, response) => {
+// 	response.render('registration.hbs', {
+// 		title: 'To create an account please enter credentials.'
+// 	})
+// });
 
 app.get('/registration-logged-in', isAuthenticated, (request, response) => {
 	response.render('registration-logged-in.hbs', {
@@ -179,23 +182,23 @@ app.post('/register', function(request, response) {
 
 	if (check_str(attributes[0]) === false) {
 		message = `First name must be 3-30 characters long and must only contain letters.`;
-		response.render('registration.hbs', {title: message});
+		response.render('login.hbs', {title: 'Welcome to the login page.', title2: message});
 	}
 	else if (check_str(attributes[1]) === false) {
 		message = `Last name must be 3-30 characters long and must only contain letters.`;
-		response.render('registration.hbs', {title: message});
+		response.render('login.hbs', {title: 'Welcome to the login page.', title2: message});
 	}
 	else if (check_uniq(attributes[2]) === false) {
 		message = `Username must have 5-15 characters and may only be alphanumeric.`;
-		response.render('registration.hbs', {title: message});
+		response.render('login.hbs', {title: 'Welcome to the login page.', title2: message});
 	}
 	else if (check_uniq(attributes[3]) === false) {
 		message = `Password must have 5-15 characters and may only be alphanumeric.`;
-		response.render('registration.hbs', {title: message});
+		response.render('login.hbs', {title: 'Welcome to the login page.', title2: message});
 	}
 	else if ((attributes[3]) !== attributes[4]) {
 		message = `Passwords do not match. Please try again.`;
-		response.render('registration.hbs', {title: message});
+		response.render('login.hbs', {title: 'Welcome to the login page.', title2: message});
 	}
 	else {
 		check = true;
@@ -216,11 +219,12 @@ app.post('/register', function(request, response) {
 					}, (err, result) => {
 						if (err) {
 							messsage = `There was an error in creating your account. Please try again.`;
-							response.render('registration.hbs', {title: `There was an error in creating your account. Please try again.`});
+							response.render('login.hbs', {title: 'Welcome to the login page.',
+								title2: `There was an error in creating your account. Please try again.`});
 						}
-						message = `You have successfully created an account with the username '${username}' and have been granted $10,000 USD. Head over to the login page.`;
-						response.render('registration.hbs', {title: message});
-					})
+						message = `You have successfully created an account with the username '${username}' and have been granted $10,000 USD. Head over to the sign in tab.`;
+						response.render('login.hbs', {title: 'Welcome to the login page.', title2: message});
+					});
 					bcrypt.hash(password, 10, function(err, hash){
 						db.collection('user_accounts').updateOne(
 											{ "firstname": firstname},
@@ -230,10 +234,11 @@ app.post('/register', function(request, response) {
 			}
 			else {
 				message = `The username '${username}' already exists within the system.`;
-				response.render('registration.hbs', {title: `The username '${username}' already exists within the system.`});
+				response.render('login.hbs', {title: 'Welcome to the login page.',
+					title2: `The username '${username}' already exists within the system.`});
 			}
 		}
-	)};
+	)}
 });
 
 function check_str (string_input) {
@@ -312,7 +317,7 @@ app.post('/profile', function(request, response) {
 	db.collection('user_accounts').updateOne(
 				{username: username}, 
 				{ $set: { "firstname": firstname, "lastname": lastname}}
-	)
+	);
 			response.render('profile.hbs', {
 				title: "Profile Updated Sucessfully",
 				firstname: firstname,
@@ -429,7 +434,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 
 		response.render('trading-success.hbs', {
 						title: message
-					})
+					});
 
 		function check_existence(stock) {
 			var index = -1;
@@ -442,7 +447,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 
 			return index;
 		}
-	}
+	};
 	buy_stock();
 });
 
@@ -607,15 +612,15 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 	var user_name_to_delete = req.body.user_id;
 	var username = req.session.passport.user.username;
 
-	console.log(user_name_to_delete)
-	console.log(username)
-	if(user_name_to_delete == username){
+	console.log(user_name_to_delete);
+	console.log(username);
+	if(user_name_to_delete === username){
 		res.render('admin-success-delete-user-success.hbs', {
 			message: "Cannot delete your own account!"
 		});
 		return;
 	}else{
-		if(user_name_to_delete == '') {
+		if(user_name_to_delete === '') {
 			res.render('admin-success-delete-user-success.hbs', {
 				message: "Cannot be empty"
 			});
@@ -626,22 +631,22 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 				mongoose.connect("mongodb://localhost:27017/accounts", function(err, db) {
 					assert.equal(null, err);
 
-					var query = { username: user_name_to_delete }
+					var query = { username: user_name_to_delete };
 
 					//console.log(query)
 					db.collection('user_accounts').find(query).toArray(function(err, result) {
 						if(err) {
 							message = 'Unable to Delete Account';
-							console.log(message)
+							console.log(message);
 							// console.log(err);
 							res.render('admin-success-delete-user-success.hbs', {
 								message: message
 							});
-						};
+						}
 						//console.log(result);
-						if(result === undefined || result.length == 0) {
+						if(result === undefined || result.length === 0) {
 							message = 'No user exists with that username';
-							console.log(message)
+							console.log(message);
 							res.render('admin-success-delete-user-success.hbs', {
 								message: message
 							});
@@ -655,12 +660,12 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 							});
 								db.close();
 							});
-						};
+						}
 					});
 				});
 
-			};
-		};
+			}
+		}
 });
 
 
