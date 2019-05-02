@@ -814,3 +814,5 @@ app.listen(8080, () => {
 	console.log('Server is up on port 8080');
 	utils.init();
 });
+
+module.exports = app;
