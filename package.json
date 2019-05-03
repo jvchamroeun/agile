@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha --recursive --exit --timeout 120000"
   },
   "author": "Michael J",
   "license": "ISC",
@@ -26,7 +26,6 @@
     "handlebars": "^4.1.2",
     "hbs": "^4.0.4",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.4.20",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
@@ -37,6 +36,10 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4",
+    "mockgoose": "^8.0.1",
+    "mongoose": "^5.5.5",
+    "supertest": "^4.0.2"
   }
 }

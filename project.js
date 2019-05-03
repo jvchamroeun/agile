@@ -162,11 +162,11 @@ passport.use(new LocalStrategy(
 // 	})
 // });
 
-app.get('/registration-logged-in', isAuthenticated, (request, response) => {
-	response.render('registration-logged-in.hbs', {
-		title: 'You are already logged in. Logout to make a new account.'
-	})
-});
+// app.get('/registration-logged-in', isAuthenticated, (request, response) => {
+// 	response.render('registration-logged-in.hbs', {
+// 		title: 'You are already logged in. Logout to make a new account.'
+// 	})
+// });
 
 app.post('/register', function(request, response) {
 
@@ -227,7 +227,7 @@ app.post('/register', function(request, response) {
 					});
 					bcrypt.hash(password, 10, function(err, hash){
 						db.collection('user_accounts').updateOne(
-											{ "firstname": firstname},
+											{ "username": username},
 											{ $set: { "password": hash}}
 					);
 				});
@@ -295,7 +295,7 @@ app.get('/profile', isAuthenticated, (request, response) => {
 app.post('/profile', function(request, response) {
 	var firstname = request.body.firstname;
 	var lastname = request.body.lastname;
-	var username = request.session.passport.user.username
+	var username = request.session.passport.user.username;
 	var message;
 	var db = utils.getDb();
 	var attributes = [firstname, lastname];
