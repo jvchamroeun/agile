@@ -215,7 +215,8 @@ app.post('/register', function(request, response) {
 						password: password,
 						type: 'standard',
 						cash2: [10000],
-						stocks: []
+						stocks: [],
+						log: []
 					}, (err, result) => {
 						if (err) {
 							messsage = `There was an error in creating your account. Please try again.`;
@@ -370,6 +371,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 	var stock = (request.body.buystockticker).toUpperCase();
 	var stocks = request.session.passport.user.stocks;
 	var cash2 = request.session.passport.user.cash2;
+	var logs = request.session.passport.user.log
 
 	const buy_stock = async () => {
 
@@ -382,6 +384,8 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 			var total_cost = Math.round(stock_price*qty*100)/100;
 			var cash_remaining = Math.round((cash2 - total_cost)*100)/100;
 			var stock_holding = {[stock]:parseInt(qty)};
+			var date = new Date()
+			var newlogs = logs.push([date, stock, qty])
 
 			if ((cash_remaining >= 0) && (total_cost !== 0)) {
 
@@ -393,6 +397,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 					stock_holding = {[stock]:parseInt(stock_remaining)};
 					stocks[index] = stock_holding;
 					cash2[0] = cash_remaining;
+
 				}
 				else {
 					cash2[0] = cash_remaining;
@@ -404,10 +409,9 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 				}
 				console.log('cash_remaining before update:'+cash_remaining);
 				console.log('cash added to database' + cash);
-
 				db.collection('user_accounts').updateOne(
 					{ "_id": ObjectID(_id)},
-					{ $set: { "cash2": cash2, "stocks": stocks}}
+					{ $set: { "cash2": cash2, "stocks": stocks, "log": logs}}
 				);
 				// await req.session.save();
 
@@ -460,6 +464,8 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 	var qty = parseInt(request.body.sellstockqty);
 	var stock = (request.body.sellstockticker).toUpperCase();
 	var stocks = request.session.passport.user.stocks;
+	var date = new Date()
+	var logs = request.session.passport.user.log
 
 	const sell_stock = async () => {
 		
@@ -476,6 +482,7 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 			var remaining_balance = Math.round((cash2[0] + total_sale)*100)/100;
 			var stock_qty = request.session.passport.user.stocks[index][stock];
 			var stock_remaining = stock_qty - qty;
+			var newlogs = logs.push([date, stock, -Math.abs(qty)])
 
 			if (stock_qty < qty) {
 				message = `You are trying to sell ${qty} shares of ${stock} when you only have ${stock_qty} shares.`;
@@ -496,7 +503,7 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 
 				db.collection('user_accounts').updateOne(
 						{ "_id": ObjectID(_id)},
-						{ $set: { "cash2": cash2, "stocks": stocks}}
+						{ $set: { "cash2": cash2, "stocks": stocks, "log": logs}}
 					);
 
 				message = `You successfully sold ${qty} shares of ${stock_name} (${stock}) at $${stock_price}/share for $${total_sale}.
