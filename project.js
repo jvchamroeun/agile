@@ -284,12 +284,13 @@ app.get('/trading-success', isAuthenticated, (request, response) => {
 app.get('/profile', isAuthenticated, (request, response) => {
 	var firstname = request.session.passport.user.firstname;
 	var lastname = request.session.passport.user.lastname;
+	var username = request.session.passport.user.username;
 
 	response.render('profile.hbs', {
 		title: 'Edit Profile',
+		username, username,
 		firstname: firstname,
-		lastname: lastname,
-
+		lastname: lastname
 	})
 });
 
@@ -673,6 +674,26 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 
 			}
 		}
+});
+
+app.get('/history', isAuthenticated, (request, response) => {
+	var user_id = request.session.passport.user._id
+	mongoose.connect("mongodb://localhost:27017/accounts", function(err,db){
+		assert.equal(null, err);
+		db.collection('user_accounts').findOne({_id: user_id}, (function(err, result) {
+			if (err) {
+				result.send('Unable to fetch Accounts');
+			}
+			response.render('history.hbs', {
+				result: result
+			});
+})
+)})})
+
+app.get('/data', isAuthenticated, (request, response) => {
+	response.render('data.html', {
+		title: "adsasdasd"
+	})
 });
 
 
