@@ -386,7 +386,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 			var cash_remaining = Math.round((cash2 - total_cost)*100)/100;
 			var stock_holding = {[stock]:parseInt(qty)};
 			var date = new Date()
-			var newlogs = logs.push([date, stock, qty])
+			var newlogs = logs.push({date: date, stock: stock, quantity: qty})
 
 			if ((cash_remaining >= 0) && (total_cost !== 0)) {
 
@@ -403,7 +403,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 				else {
 					cash2[0] = cash_remaining;
 					
-					console.log("cash_remaining after else, after cash=cash_remain:"+cash_remaining);
+					console.log("cash_remaining after else, after cash=cash_remain:"+ cash_remaining);
 
 
 					stocks.push(stock_holding);
@@ -483,7 +483,7 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 			var remaining_balance = Math.round((cash2[0] + total_sale)*100)/100;
 			var stock_qty = request.session.passport.user.stocks[index][stock];
 			var stock_remaining = stock_qty - qty;
-			var newlogs = logs.push([date, stock, -Math.abs(qty)])
+			var newlogs = logs.push({date: date, stock: stock, quantity: -Math.abs(qty)})
 
 			if (stock_qty < qty) {
 				message = `You are trying to sell ${qty} shares of ${stock} when you only have ${stock_qty} shares.`;
@@ -677,18 +677,19 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 });
 
 app.get('/history', isAuthenticated, (request, response) => {
-	var user_id = request.session.passport.user._id
+	var id = request.session.passport.user._id
 	mongoose.connect("mongodb://localhost:27017/accounts", function(err,db){
 		assert.equal(null, err);
-		db.collection('user_accounts').findOne({_id: user_id}, (function(err, result) {
+		db.collection('user_accounts').findOne({"_id": ObjectID(id)}, (function(err, result) {
 			if (err) {
 				result.send('Unable to fetch Accounts');
 			}
 			response.render('history.hbs', {
-				result: result
+				result: result.log
 			});
 })
 )})})
+
 
 app.get('/data', isAuthenticated, (request, response) => {
 	response.render('data.html', {
