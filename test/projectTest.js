@@ -70,6 +70,9 @@ const utils = require('../utils');
 
 var agent = chai.request.agent(app);
 describe("GET /trading-success", function () {
+    after(function (done) {
+        done();
+    });
 
     it("Successful log in", function (done) {
         agent
@@ -90,6 +93,10 @@ describe("GET /trading-success", function () {
 
 var agent = chai.request.agent(app);
 describe("GET /history", function () {
+    after(function (done) {
+        done();
+    });
+
 
     it("Successful log in", function (done) {
         agent
