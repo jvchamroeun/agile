@@ -588,7 +588,7 @@ app.get('/admin-success', isAdmin, (request, response) => {
  });
 
 app.post('/admin-success-user-accounts', isAdmin, function(req, res, next) {
-	mongoose.connect("mongodb://localhost:27017/accounts", function(err, db) {
+	mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err, db) {
 		assert.equal(null, err);
 		db.collection('user_accounts').find().toArray(function(err, result) {
 			if (err) {
@@ -603,7 +603,7 @@ app.post('/admin-success-user-accounts', isAdmin, function(req, res, next) {
 });
 
 app.post('/admin-success-delete-user', isAdmin, function(req, res, next) {
-	mongoose.connect("mongodb://localhost:27017/accounts", function(err, db) {
+	mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err, db) {
 		assert.equal(null, err);
 		db.collection('user_accounts').find().toArray(function(err, result) {
 			if(err) {
@@ -636,7 +636,7 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 			// try {
 				// console.log(user_id_to_delete);
 				message = '';
-				mongoose.connect("mongodb://localhost:27017/accounts", function(err, db) {
+				mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err, db) {
 					assert.equal(null, err);
 
 					var query = { username: user_name_to_delete };
@@ -677,8 +677,8 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 });
 
 app.get('/history', isAuthenticated, (request, response) => {
-	var id = request.session.passport.user._id
-	mongoose.connect("mongodb://localhost:27017/accounts", function(err,db){
+	var id = request.session.passport.user._id;
+	mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err,db){
 		assert.equal(null, err);
 		db.collection('user_accounts').findOne({"_id": ObjectID(id)}, (function(err, result) {
 			if (err) {
@@ -688,7 +688,7 @@ app.get('/history', isAuthenticated, (request, response) => {
 				result: result.log
 			});
 })
-)})})
+)})});
 
 
 app.get('/data', isAuthenticated, (request, response) => {
