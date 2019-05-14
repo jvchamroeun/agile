@@ -747,6 +747,57 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 		}
 });
 
+app.post('/profile-update', isAuthenticated, (request, response) => {
+	var _id = request.session.passport.user._id;
+	var username = request.session.passport.user.username;
+	var firstname = request.body.firstname;
+	var lastname = request.body.lastname;
+	var curpassword = request.body.curpassword;
+	var newpassword = request.body.newpassword;
+	var conpassword = request.body.conpassword;
+	var oldpassword = request.session.passport.user.password;
+	console.log(firstname)
+	console.log(lastname)
+	console.log(curpassword)
+	if (firstname || lastname || curpassword == null) {
+		  		response.render('profile-update.hbs',{
+		  		message: "You cannot have empty parameters.",
+				title: 'Edit Profile',
+				username, username,
+				firstname: firstname,
+				lastname: lastname
+		  	})
+	} else {
+	bcrypt.compare(conpassword, oldpassword, function(err, res) {
+		  if(res) {
+				bcrypt.hash(password, 10, function(err, hash){
+					db.collection('user_accounts').updateOne(
+										{ "_id": ObjectID(_id)},
+										{ $set: { "password": hash}}
+				);
+				});
+				db.collection('user_accounts').updateOne(
+						{ "_id": ObjectID(_id)},
+						{ $set: { "firstname": firstname, "lastname": lastname}}
+					);
+				response.render('profile-update.hbs',{
+					message: "Update Successful"
+				})
+		  } else {
+			var firstname = request.session.passport.user.firstname;
+			var lastname = request.session.passport.user.lastname;
+		  	response.render('profile-update.hbs',{
+		  		message: "Please enter the correct password",
+				title: 'Edit Profile',
+				username, username,
+				firstname: firstname,
+				lastname: lastname
+		  	})
+		  }
+		});
+}})
+
+
 app.get('/history', isAuthenticated, (request, response) => {
 			response.render('history.hbs', {
 			});
