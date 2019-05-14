@@ -48,6 +48,9 @@ app.use(session({
 	saveUninitialized: false
 }));
 
+hbs.registerHelper('reverse', function(err){
+	err.reverse()
+})
 
 passport.serializeUser(function(user, done) {
         done(null, user); 
@@ -276,8 +279,29 @@ app.get('/trading', (request, response) => {
 });
 
 app.get('/trading-success', isAuthenticated, (request, response) => {
+	var stocks = request.session.passport.user.stocks;
+	var num_stocks = stocks.length;
+	var stock_keys = [];
+	var cash = request.session.passport.user.cash;
+	var balance = 'Shares: \n';
+	var cash2 = request.session.passport.user.cash2;
+
+	if (num_stocks === 0) {
+		balance = 'You currently do not have any stocks.';
+	}
+	else {
+		var i;
+		for (i = 0; i < num_stocks; i++) {
+			stock_keys.push(Object.keys(stocks[i]));
+			var key_value = stocks[i][stock_keys[i][0]];
+			balance += stock_keys[i][0] + ': ' + key_value + ' shares.' + '\n';
+		}
+	}
+
 	response.render('trading-success.hbs', {
-		title: 'Welcome to the trading page.'
+		title: 'Welcome to the trading page.',
+		balance: balance,
+		head: `Cash: $${cash2[0]}`
 	})
 });
 
@@ -332,37 +356,37 @@ app.post('/profile', function(request, response) {
 	}	
 });
 
-app.post('/trading-success-search', isAuthenticated, (request, response) => {
+// app.post('/trading-success-search', isAuthenticated, (request, response) => {
 
-	var stock = request.body.stocksearch;
+// 	var stock = request.body.stocksearch;
 
-	const get_stock_info = async (stock_ticker) => {
+// 	const get_stock_info = async (stock_ticker) => {
 
-		var message;
+// 		var message;
 
-		try {
-			const stock_info = await axios.get(`https://cloud.iexapis.com/beta/stock/${stock_ticker}/quote?token=sk_291eaf03571b4f0489b0198ac1af487d`);
-			var stock_name = stock_info.data.companyName;
-			var stock_price = stock_info.data.latestPrice;
+// 		try {
+// 			const stock_info = await axios.get(`https://cloud.iexapis.com/beta/stock/${stock_ticker}/quote?token=sk_291eaf03571b4f0489b0198ac1af487d`);
+// 			var stock_name = stock_info.data.companyName;
+// 			var stock_price = stock_info.data.latestPrice;
 
-			message = `The price of the selected ticker '${stock.toUpperCase()}' which belongs to '${stock_name}' is currently: $${stock_price} USD.`;
+// 			message = `The price of the selected ticker '${stock.toUpperCase()}' which belongs to '${stock_name}' is currently: $${stock_price} USD.`;
 			
-		}
-		catch (err) {
-			if (stock === '') {
-				message = 'Please enter a stock ticker i.e. TSLA, MSFT';
-			}
-			else {
-				message = `Sorry the stock ticker '${stock}' is invalid.`;
-			}
-		}	
+// 		}
+// 		catch (err) {
+// 			if (stock === '') {
+// 				message = 'Please enter a stock ticker i.e. TSLA, MSFT';
+// 			}
+// 			else {
+// 				message = `Sorry the stock ticker '${stock}' is invalid.`;
+// 			}
+// 		}	
 
-		response.render('trading-success.hbs', {
-				title: message
-				})
-	};
-	get_stock_info(stock);
-});
+// 		response.render('trading-success.hbs', {
+// 				title: message
+// 				})
+// 	};
+// 	get_stock_info(stock);
+// });
 
 app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 
@@ -373,6 +397,12 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 	var stocks = request.session.passport.user.stocks;
 	var cash2 = request.session.passport.user.cash2;
 	var logs = request.session.passport.user.log
+	var stocks = request.session.passport.user.stocks;
+	var num_stocks = stocks.length;
+	var stock_keys = [];
+	var cash = request.session.passport.user.cash;
+	var balance = 'Shares: \n';
+	var cash2 = request.session.passport.user.cash2;
 
 	const buy_stock = async () => {
 
@@ -385,7 +415,7 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 			var total_cost = Math.round(stock_price*qty*100)/100;
 			var cash_remaining = Math.round((cash2 - total_cost)*100)/100;
 			var stock_holding = {[stock]:parseInt(qty)};
-			var date = new Date()
+			var date = new Date().toString()
 			var newlogs = logs.push({date: date, stock: stock, quantity: qty})
 
 			if ((cash_remaining >= 0) && (total_cost !== 0)) {
@@ -436,9 +466,23 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 				message = `Sorry the stock ticker '${request.body.buystockticker}' is invalid.`;
 			}
 		}
-
+		if (num_stocks === 0) {
+			balance = 'You currently do not have any stocks.';
+		}
+		else {
+			var newstocks = request.session.passport.user.stocks;
+			var numstocks = newstocks.length
+			var i;
+			for (i = 0; i < num_stocks; i++) {
+				stock_keys.push(Object.keys(newstocks[i]));
+				var key_value = newstocks[i][stock_keys[i][0]];
+				balance += stock_keys[i][0] + ': ' + key_value + ' shares.' + '\n';
+			}
+		}
 		response.render('trading-success.hbs', {
-						title: message
+						title: message,
+						balance: balance,
+						head: `Cash: $${cash2[0]}`
 					});
 
 		function check_existence(stock) {
@@ -457,16 +501,21 @@ app.post('/trading-success-buy', isAuthenticated, (request, response) => {
 });
 
 app.post('/trading-success-sell', isAuthenticated, (request, response) => {
-	// console.log(request.session.passport.user._id);
-	// console.log();
+
 	var _id = request.session.passport.user._id;
 	var cash = request.session.passport.user.cash;
 	var cash2 = request.session.passport.user.cash2;
 	var qty = parseInt(request.body.sellstockqty);
 	var stock = (request.body.sellstockticker).toUpperCase();
 	var stocks = request.session.passport.user.stocks;
-	var date = new Date()
+	var date = new Date().toString()
 	var logs = request.session.passport.user.log
+	var stocks = request.session.passport.user.stocks;
+	var num_stocks = stocks.length;
+	var stock_keys = [];
+	var cash = request.session.passport.user.cash;
+	var balance = 'Shares: \n';
+	var cash2 = request.session.passport.user.cash2;
 
 	const sell_stock = async () => {
 		
@@ -524,8 +573,24 @@ app.post('/trading-success-sell', isAuthenticated, (request, response) => {
 				message = `You do not own any shares with the ticker '${stock}'.`;
 			}
 		}
+
+		if (num_stocks === 0) {
+			balance = 'You currently do not have any stocks.';
+		}
+		else {
+			var newstocks = request.session.passport.user.stocks;
+			var num_stocks = newstocks.length;
+			var i;
+			for (i = 0; i < num_stocks; i++) {
+				stock_keys.push(Object.keys(newstocks[i]));
+				var key_value = newstocks[i][stock_keys[i][0]];
+				balance += stock_keys[i][0] + ': ' + key_value + ' shares.' + '\n';
+			}
+		}
 		response.render('trading-success.hbs', {
-			title: message
+			title: message,
+			balance: balance,
+			head: `Cash: $${cash2[0]}`
 		});
 
 		function check_existence(stock) {
@@ -587,20 +652,30 @@ app.get('/admin-success', isAdmin, (request, response) => {
     });
  });
 
+<<<<<<< HEAD
 app.post('/admin-success-user-accounts', isAdmin, function(req, res, next) {
 	mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err, db) {
+=======
+app.get('/userlist-data', isAdmin, function(req, res, next) {
+	mongoose.connect("mongodb://localhost:27017/accounts", function(err, db) {
+>>>>>>> 420567df9fe13b2222734067b8d0675438e16e78
 		assert.equal(null, err);
 		db.collection('user_accounts').find().toArray(function(err, result) {
 			if (err) {
 				res.send('Unable to fetch Accounts');
 			}
-			res.render('admin-success-user-accounts-list.hbs', {
+			res.render('admin-userlist-data.hbs', {
 				result: result
 			});
 		});
 		db.close;
 	});
 });
+
+app.post('/admin-success-user-accounts', isAuthenticated, (request, response) => {
+			response.render('admin-success-user-accounts-list.hbs', {
+			});
+})
 
 app.post('/admin-success-delete-user', isAdmin, function(req, res, next) {
 	mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err, db) {
@@ -615,6 +690,7 @@ app.post('/admin-success-delete-user', isAdmin, function(req, res, next) {
 		});
 		db.close;
 	})});
+
 
 app.post('/admin-success-delete-user-success', function(req, res, next) {
 	var user_name_to_delete = req.body.user_id;
@@ -677,17 +753,29 @@ app.post('/admin-success-delete-user-success', function(req, res, next) {
 });
 
 app.get('/history', isAuthenticated, (request, response) => {
+<<<<<<< HEAD
 	var id = request.session.passport.user._id;
 	mongoose.connect("mongodb://localhost:27017/accounts", { useNewUrlParser: true }, function(err,db){
+=======
+			response.render('history.hbs', {
+			});
+})
+
+
+app.get('/data', (request, response) => {
+	var id = request.session.passport.user._id
+	mongoose.connect("mongodb://localhost:27017/accounts", function(err,db){
+>>>>>>> 420567df9fe13b2222734067b8d0675438e16e78
 		assert.equal(null, err);
 		db.collection('user_accounts').findOne({"_id": ObjectID(id)}, (function(err, result) {
 			if (err) {
 				result.send('Unable to fetch Accounts');
 			}
-			response.render('history.hbs', {
+			response.render('data.hbs', {
 				result: result.log
 			});
 })
+<<<<<<< HEAD
 )})});
 
 
@@ -696,6 +784,10 @@ app.get('/data', isAuthenticated, (request, response) => {
 		title: "adsasdasd"
 	})
 });
+=======
+)})
+})
+>>>>>>> 420567df9fe13b2222734067b8d0675438e16e78
 
 
 

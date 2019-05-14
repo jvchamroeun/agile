@@ -1,147 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
-    
 <head>
-    <title>Trading Page</title>
-    <meta charset="utf-8">
-    <link rel='stylesheet' href='testcss.css'>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=PT+Serif|Playfair+Display" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
-    <link rel="shortcut icon" type="image/x-icon" href="images/icon1.png" />   
-
+	<title>trading</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/mystyle.css">
 </head>
-    
-<body>
 
-    <div class="defcontainer">
-        <div class="defheader">
+<body class="main">
 
-        </div>
-        
-        <div class="defmenu">
-            <div class='list-group'>
-                <a href="logout" class="list-group-item">Logout</a>
-                <a href="profile" class="list-group-item">Profile</a>
-                <a href="trading-success" class="list-group-item list-group-item-info">Trading</a>
-                <a href="admin-success" class="list-group-item">Admin Panel</a>
-            </div>
-        </div>
-        
-        <div class="defcontent">
-            <br>
-            <div class='chfont container'>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  			<a class="navbar-brand" href="#">
+  					JetX<!--logo-->
+  			</a>
+  			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    		<span class="navbar-toggler-icon"></span>
+ 		 	</button>
+  			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+   				<ul class="navbar-nav ml-auto">
+     				<li class="nav-item">
+       			 		<a class="nav-link" href="profile">My Profile</a>
+			    	</li>
+   			   		<li class="nav-item">
+     			   		<a class="nav-link" href="trading-success">Buy/Sell</a>
+    		  		</li>
+   			   		<li class="nav-item">
+     			   		<a class="nav-link" href="history">History</a>
+    		  		</li>
+   			   		<li class="nav-item">
+     			   		<a class="nav-link" href="logout">Log out</a>
+    		  		</li>
+  			  	</ul>
+  			</div>
+		</nav>
+	</header>
+  
+	<div style="height: 4rem;">#</div>
+
+
+	<div class="container">
+
+<div class="mx-auto" style="max-width: 800px;">
+
+
 <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com" rel="noopener" target="_blank"><span class="blue-text"></span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
   {
   "symbols": [
     {
-      "description": "Amazon.com Inc.",
-      "proName": "NASDAQ:AMZN"
+      "description": "APPLE INC. : APPL",
+      "proName": "NASDAQ:AAPL"
     },
     {
-      "description": "Alphabet Inc.",
+      "description": "Alphabet Inc: GOOG",
       "proName": "NASDAQ:GOOG"
     },
     {
-      "description": "Microsoft Corporation",
-      "proName": "NASDAQ:MSFT"
+      "description": "Amazon: AMZN",
+      "proName": "NASDAQ:AMZN"
     },
     {
-      "description": "Apple Inc.",
+      "description": "Apple Inc: AAPL",
       "proName": "NASDAQ:AAPL"
+    },
+    {
+      "description": "Microsoft Corp: MSFT",
+      "proName": "NASDAQ:MSFT"
     }
   ],
+  "colorTheme": "light",
+  "isTransparent": false,
+  "displayMode": "adaptive",
   "locale": "en"
 }
   </script>
 </div>
-<!-- TradingView Widget END -->                
-                <p class="font-italic">Please note all prices are in USD.</p>
-                <p class="font-weight-bold">{{title}}</p>
-                <p class="font-weight-bold">{{head}}</p>
+<!-- TradingView Widget END -->
+  <!-- Button trigger modal -->
+  <form action="/trading-success-holdings" method="POST"> 
+<button type="button" class="btn btn-outline-secondary btn-sm" style="float:left;" data-toggle="modal" data-target="#balanceModal">
+  SHOW BALANCE
+</button>
 
-                    <br>
+<!-- Modal -->
+<div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Your Balance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <br>
+         {{head}}
+         {{balance}}
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-                  <div class="form-group btn-group">
-                <form action="/trading-success-search" method="POST">
-                    <label for="stocksearch">Stock Search Price</label>
-                    <input type="text" class="form-control" name='stocksearch' id="stocksearch" placeholder="Stock Ticker e.g. TSLA">
-                    <p>&nbsp;</p>
-                    <input type="submit" class="btn btn-primary" value="Search">
-                </form>
-                
-                </div>
+</form>
 
-                  <p>&nbsp;</p>
 
-                <form action="/trading-success-buy" method="POST">
-                  <div class="row">
-                    <div class="col">
-                        <label for="stocksearch">Buy Stock</label>
-                      <input type="text" class="form-control" name="buystockticker" id="buystockticker" placeholder="Enter Stock Ticker e.g FB">
-                    </div>
-                    <div class="col">
-                        <label for="stocksearch">Quantity</label>
-                      <input type="number" class="form-control" name="buystockqty" id="buystockqty" placeholder="Enter Stock Ticker e.g FB">
-                    </div>
-                  </div>
-                  <p>&nbsp;</p>
-                  <button type="submit" class="btn btn-primary">Buy</button>
-                </form>
 
-                <p>&nbsp;</p>
-                <form action="/trading-success-sell" method="POST">
-                <div class="row">
-                    <div class="col">
-                        <label for="stocksearch">Sell Stock</label>
-                      <input type="text" class="form-control" name="sellstockticker" id="sellstockticker" placeholder="Enter Stock Ticker e.g FB">
-                    </div>
-                    <div class="col">
-                        <label for="stocksearch">Quantity</label>
-                      <input type="number" class="form-control" name="sellstockqty" id="sellstockqty" placeholder="Enter Stock Ticker e.g FB">
-                    </div>
-                  </div>
-                  <p>&nbsp;</p>
-                  <button type="submit" class="btn btn-primary">Sell</button>
-                  </form>
-
-                    <p>&nbsp;</p>
-
-                <form action="/trading-success-holdings" method="POST">
-                <label for="stockholdings"></label>
-
-                <input type="submit" class="btn btn-primary" value="Show Stocks and Cash Amount">
-
-                </form>
-
-            </div>
-                
-                <br>
-                    
-
-                <br><br>
-
-                </form>
-
-            </div>
-
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <a class="btn btn-outline-secondary btn-sm" id="pills-buy-tab" data-toggle="pill" href="#pills-buy" role="tab" aria-controls="pills-buy" aria-selected="true">BUY</a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-secondary btn-sm" id="pills-sell-tab" data-toggle="pill" href="#pills-sell" role="tab" aria-controls="pills-sell" aria-selected="false">SELL</a>
+  </li>
+</ul>
+{{title}}
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-buy" role="tabpanel" aria-labelledby="pills-buy-tab">
+    <form action="/trading-success-buy" method="POST">
+      <div class="row">
+        <div class="col-auto">
+          <input type="number" class="form-control" placeholder="Quantity" id="buystockqty" name="buystockqty">
         </div>
-        <footer class="chfont page-footer font-small blue">
-            <div class="footer-copyright text-center py-3">© 2019 Copyright:
-            <a href="">Stock Trader</a>  All Rights Reserved
+        <div class="col-auto">
+          <input id="buystockticker" name="buystockticker" type="text" class="form-control" placeholder="Stock">
+        </div>
+        <!-- Button trigger modal -->
+        <button type="submit" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#buyModal">
+          Confirm
+        </button>
 
-        </footer>
-    </div> 
+<!-- Modal -->
+        <!-- <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="buyModalLabel">Message or sth</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+            
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </form>
+  </div>
+  <div class="tab-pane fade" id="pills-sell" role="tabpanel" aria-labelledby="pills-sell-tab">
+    <form action="/trading-success-sell" method="POST">
+      <div class="row">
+        <div class="col-auto">
+          <input id="sellstockqty" name="sellstockqty" type="number" class="form-control" placeholder="Quantity">
+        </div>
+        <div class="col-auto">
+          <input type="text" class="form-control" placeholder="Stock" id="sellstockticker" name="sellstockticker"> 
+        </div>
+        <!-- Button trigger modal -->
+        <button type="submit" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#sellModal">
+          Confirm
+        </button>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Modal -->
+        <!-- <div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="sellModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="sellModalLabel">Message or sth</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  you dont have enough stock
+                  <br>
+                  you sell xxx xxx and get xxx
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </form>
+  </div>
+</div>
 
-    </body>
+
+
+</div>
+
+<br>
+
+
+
+
+
+
+
+<p>Use the tool below to search for stocks</p>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container" style="margin-top: 4rem;">
+      <div id="tradingview_52b8e"></div>
+      <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text"></span></a></div>
+  
+    </div>
+    <!-- TradingView Widget END -->
+		
+  </div>
+
+
+
+	<footer class="footer">
+      	<div class="container">
+        	<span class="text-muted">Copyright 2019.</span>
+      	</div>
+    </footer>
+
+
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script>
+  new TradingView.widget(
+  {
+  "width": 980,
+  "height": 610,
+  "symbol": "NASDAQ:AAPL",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "Light",
+  "style": "1",
+  "locale": "en",
+  "toolbar_bg": "#f1f3f6",
+  "enable_publishing": false,
+  "allow_symbol_change": true,
+  "container_id": "tradingview_52b8e"
+  }
+  );
+  </script>  
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
 </html>
