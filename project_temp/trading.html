@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>trading</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/mystyle.css">
+</head>
+
+<body class="main">
+
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  			<a class="navbar-brand" href="#">
+  					JetX<!--logo-->
+  			</a>
+  			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    		<span class="navbar-toggler-icon"></span>
+ 		 	</button>
+  			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+   				<ul class="navbar-nav ml-auto">
+     				<li class="nav-item">
+       			 		<a class="nav-link" href="#">My Profile</a>
+			    	</li>
+   			   		<li class="nav-item">
+     			   		<a class="nav-link" href="#">Buy/Sell</a>
+    		  		</li>
+   			   		<li class="nav-item">
+     			   		<a class="nav-link" href="#">History</a>
+    		  		</li>
+   			   		<li class="nav-item">
+     			   		<a class="nav-link" href="#">Log out</a>
+    		  		</li>
+  			  	</ul>
+  			</div>
+		</nav>
+	</header>
+	<div style="height: 4rem;">#</div>
+
+
+	<div class="container">
+
+<div class="mx-auto" style="max-width: 800px;">
+
+
+
+
+
+
+
+
+
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-secondary btn-sm" style="float:left;" data-toggle="modal" data-target="#balanceModal">
+  SHOW BALANCE
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="balanceModal" tabindex="-1" role="dialog" aria-labelledby="balanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Your Balance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          balance
+          <br>
+          balance
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+  <li class="nav-item">
+    <a class="btn btn-outline-secondary btn-sm" id="pills-buy-tab" data-toggle="pill" href="#pills-buy" role="tab" aria-controls="pills-buy" aria-selected="true">BUY</a>
+  </li>
+  <li class="nav-item">
+    <a class="btn btn-outline-secondary btn-sm" id="pills-sell-tab" data-toggle="pill" href="#pills-sell" role="tab" aria-controls="pills-sell" aria-selected="false">SELL</a>
+  </li>
+</ul>
+<div class="tab-content" id="pills-tabContent">
+  <div class="tab-pane fade show active" id="pills-buy" role="tabpanel" aria-labelledby="pills-buy-tab">
+    <form>
+      <div class="row">
+        <div class="col-auto">
+          <input type="number" class="form-control" placeholder="quantity">
+        </div>
+        <div class="col-auto">
+          <input type="text" class="form-control" placeholder="stock">
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#buyModal">
+          confirm
+        </button>
+
+<!-- Modal -->
+        <div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="buyModalLabel">Message or sth</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  not enough money
+                  <br>
+                  you spend xxx buy xxx xxx
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-pane fade" id="pills-sell" role="tabpanel" aria-labelledby="pills-sell-tab">
+    <form>
+      <div class="row">
+        <div class="col-auto">
+          <input type="number" class="form-control" placeholder="quantity">
+        </div>
+        <div class="col-auto">
+          <input type="text" class="form-control" placeholder="stock">
+        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#sellModal">
+          confirm
+        </button>
+
+<!-- Modal -->
+        <div class="modal fade" id="sellModal" tabindex="-1" role="dialog" aria-labelledby="sellModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="sellModalLabel">Message or sth</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  you dont have enough stock
+                  <br>
+                  you sell xxx xxx and get xxx
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container" style="margin-top: 4rem;">
+      <div id="tradingview_52b8e"></div>
+      <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div>
+  
+    </div>
+    <!-- TradingView Widget END -->
+		
+  </div>
+
+
+
+	<footer class="footer">
+      	<div class="container">
+        	<span class="text-muted">copyright 2019.</span>
+      	</div>
+    </footer>
+
+
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script>
+  new TradingView.widget(
+  {
+  "width": 980,
+  "height": 610,
+  "symbol": "NASDAQ:AAPL",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "Light",
+  "style": "1",
+  "locale": "en",
+  "toolbar_bg": "#f1f3f6",
+  "enable_publishing": false,
+  "allow_symbol_change": true,
+  "container_id": "tradingview_52b8e"
+  }
+  );
+  </script>  
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
+</html>
