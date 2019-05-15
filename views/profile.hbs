@@ -69,27 +69,30 @@
       				<div class="card-body">
 			
             <form>
-                  <div class="form-group">
-                    <label for="fname">First Name</label>
-                    <input type="text" id="firstname" value={{firstname}} name="firstname">
-                </div>
-                  <div class="form-group">
-                    <label for="lname">Last Name</label>
-                    <input type="text" id="lastname" value={{lastname}} name="lastname">
-                  </div>
-                  <div class="form-group">
-                    <label for="pswd"> Current password</label>
-                    <input type="password" id="curpassword" name="curpassword"><br>
-                    <small>if you want to change your password, you have to enter your old password correctly</small>
-                  </div>
-                  <div class="form-group">
-                    <label for="npswd"> New password</label>
-                    <input type="password" id="newpassword" name="newpassword">
-                  </div>
-                  <div class="form-group">
-                    <label for="npswd"> Confirm password</label>
-                    <input type="password" id="conpassword" name="conpassword">
-                  </div>
+                                    <div class="form-group">
+                                        <label for="firstname">First Name</label>
+                                        <input type="text" name='firstname' id="firstname" value={{firstname}} placeholder="Must be 3-30 characters long and must only contain letters.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastname">Last Name</label>
+                                        <input type="text" name='lastname' id="lastname" value={{lastname}} placeholder="Must be 3-30 characters long and must only contain letters.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" name='username' id="username" placeholder="Must have 5-15 characters and may only be alphanumeric.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" name='password' id="password" placeholder="Must have 5-15 characters and may only be alphanumeric.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm_password">Current Password</label>
+                                        <input type="password" name='current_password' id="current_password" placeholder="Current Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm_password">Confirm Password</label>
+                                        <input type="password" name='confirm_password' id="confirm_password" placeholder="Confirm Password">
+                                    </div>
                 </form>
       					<!-- Button trigger modal -->
 						<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-toggle="modal" data-target="#Modal">
@@ -111,7 +114,7 @@
       								</div>
       								<div class="modal-footer">
         								<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-dismiss="modal">Close</button>
-                      <form action='/profile-update', method='POST'>
+                      <form action='/profile', method='POST'>
         								<button type="submit" class="btn btn-outline-secondary btn-sm collapsed">Save changes</button>
                       </form>
       								</div>
