@@ -80,7 +80,7 @@ header{
 
   @keyframes logo {
   0% {opacity: 1; left:0;}
-  75% {opacity: 0; left:0;}
+  90% {opacity: 0; left:0;}
   100% {opacity: 0; left:100%;}
 }
 
