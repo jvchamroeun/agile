@@ -63,3 +63,36 @@ header{
 	width:70%;
 	margin-left: 15%;
 }
+
+
+.logo {
+  z-index: 12;
+  left:100%;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: white;
+  animation-name: logo;
+  animation-duration: 4s;
+  opacity: 0;
+  }
+
+  @keyframes logo {
+  0% {opacity: 1; left:0;}
+  75% {opacity: 0; left:0;}
+  100% {opacity: 0; left:100%;}
+}
+
+.logo_holder{
+	height:600px;
+	width:600px;
+	margin:auto;
+}
+
+
+.delete{
+	width: 70%;
+	margin-left: 15%;
+
+}
