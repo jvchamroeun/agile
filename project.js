@@ -145,20 +145,28 @@ passport.use(new LocalStrategy(
 
     function(username, password, done) {
         user_account.findOne({ username: username }, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            // if (user.password != password) { return done(null, false); }
-            bcrypt.compare(password, user.password, function(err, res) {
-                if(res) {
-                    return done(null, user);
-                } else {
+
+            utils.getDb().collection('user_accounts').findOne({username: username}, function (err, user) {
+
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
                     return done(null, false);
                 }
+                // if (user.password != password) { return done(null, false); }
+                bcrypt.compare(password, user.password, function (err, res) {
+                    if (res) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false);
+                    }
+                });
+                return done(null, user);
             });
-            return done(null, user);
-        });
-    }
-));
+        })
+    })
+);
 
 // app.get('/register', (request, response) => {
 // 	response.render('registration.hbs', {
@@ -356,6 +364,155 @@ app.post('/profile', function(request, response) {
         response.render('profile.hbs', {title: message});
     }
 });
+
+	var firstname = request.session.passport.user.firstname;
+	var lastname = request.session.passport.user.lastname;
+	var username = request.session.passport.user.username;
+	var _id = request.session.passport.user._id;
+	var cash = request.session.passport.user.cash;
+	var qty = request.body.buystockqty;
+	var stocks = request.session.passport.user.stocks;
+	var cash2 = request.session.passport.user.cash2;
+	var logs = request.session.passport.user.log;
+	var stocks = request.session.passport.user.stocks;
+	var num_stocks = stocks.length;
+	var stock_keys = [];
+	var cash = request.session.passport.user.cash;
+	var balance = 'Shares: \n';
+	var cash2 = request.session.passport.user.cash2;
+	var newstocks = request.session.passport.user.stocks;
+	var numstocks = newstocks.length;
+	var i;
+	for (i = 0; i < num_stocks; i++) {
+		stock_keys.push(Object.keys(newstocks[i]));
+		var key_value = newstocks[i][stock_keys[i][0]];
+		balance += stock_keys[i][0] + ': ' + key_value + ' shares.' + '\n';
+	}
+
+	response.render('profile.hbs', {
+		title: 'Edit Profile',
+		username: username,
+		firstname: firstname,
+		balance: balance,
+		cashbalance: `Cash: $${cash2[0]}`,
+		lastname: lastname
+});
+
+// app.post('/profile', function(request, response) {
+// 	var _id = request.session.passport.user._id;
+// 	var firstname = request.session.passport.user.firstname;
+// 	var lastname = request.session.passport.user.lastname;
+// 	var username = request.session.passport.user.username;
+// 	var nfirstname = request.body.firstname;
+// 	var nlastname = request.body.lastname;
+// 	var nusername = request.body.username;
+// 	var curpassword = request.body.curpassword;
+// 	var newpassword = request.body.newpassword;
+// 	var conpassword = request.body.conpassword;
+// 	var oldpassword = request.session.passport.user.password;
+// 	console.log(firstname)
+// 	console.log(lastname)
+// 	console.log(curpassword)
+// 	console.log(nfirstname)
+// 	console.log(nlastname)
+// 	console.log(nusername)
+// 	if (firstname || lastname || curpassword == null) {
+// 		  		response.render('profile.hbs',{
+// 		  		message: "You cannot have empty parameters.",
+// 				title: 'Edit Profile',
+// 				username: username,
+// 				firstname: firstname,
+// 				lastname: lastname
+// 		  	})
+// 	} else {
+// 	bcrypt.compare(conpassword, oldpassword, function(err, res) {
+// 		  if(res) {
+// 				bcrypt.hash(password, 10, function(err, hash){
+// 					db.collection('user_accounts').updateOne(
+// 										{ "_id": ObjectID(_id)},
+// 										{ $set: { "password": hash}}
+// 				);
+// 				});
+// 				db.collection('user_accounts').updateOne(
+// 						{ "_id": ObjectID(_id)},
+// 						{ $set: { "firstname": firstname, "lastname": lastname}}
+// 					);
+// 				response.render('profile.hbs',{
+// 					message: "Update Successful"
+// 				})
+// 		  } else {
+// 			var firstname = request.session.passport.user.firstname;
+// 			var lastname = request.session.passport.user.lastname;
+// 		  	response.render('profile.hbs',{
+// 		  		message: "Please enter the correct password",
+// 				title: 'Edit Profile',
+// 				username, username,
+// 				firstname: firstname,
+// 				lastname: lastname
+// 		  	})
+// 		  }
+// 		});
+// }})
+
+app.post('/profile-update', isAuthenticated, (request, response) => {
+	var _id = request.session.passport.user._id;
+	var db = utils.getDb();
+	var firstname = request.session.passport.user.firstname;
+	var lastname = request.session.passport.user.lastname;
+	var username = request.session.passport.user.username;
+	var curpassword = request.body.curpassword;
+	var newpassword = request.body.newpassword;
+	var conpassword = request.body.conpassword;
+	var oldpassword = request.session.passport.user.password;
+	console.log(newpassword);
+	console.log(curpassword);
+	if (newpassword === '' || curpassword === '' || conpassword === '') {
+		  		response.render('profile-update.hbs',{
+		  		message: "You cannot have empty parameters.",
+				title: 'Edit Profile',
+				username: username,
+				firstname: firstname,
+				lastname: lastname
+		  	})
+	} else {
+	bcrypt.compare(curpassword, oldpassword, function(err, res) {
+		  if(res) {
+			  	if (newpassword === conpassword){
+					bcrypt.hash(newpassword, 10, function(err, hash){
+									db.collection('user_accounts').updateOne(
+														{ "_id": ObjectID(_id)},
+														{ $set: { "password": hash}}
+								);
+								});	  
+				response.render('profile-update.hbs',{
+					message: "Update Successful",
+					title: 'Edit Profile',
+					username: username,
+					firstname: firstname,
+					lastname: lastname
+				})
+			} else {
+						response.render('profile-update.hbs',{
+							message: "New passwords do not match.",
+							title: 'Edit Profile',
+							username: username,
+							firstname: firstname,
+							lastname: lastname
+						})
+		  }}
+		   else {
+		  	response.render('profile-update.hbs',{
+		  		message: "Please enter the correct password",
+				title: 'Edit Profile',
+				username: username,
+				firstname: firstname,
+				lastname: lastname
+		  	})
+		  }
+	})
+	}
+});
+
 
 // app.post('/trading-success-search', isAuthenticated, (request, response) => {
 
@@ -756,17 +913,25 @@ app.get('/history', isAuthenticated, (request, response) => {
 
 app.get('/data', (request, response) => {
     var id = request.session.passport.user._id;
+    var history = request.session.passport.user.log;
     mongoose.connect(db_uri, { useNewUrlParser: true }, function(err,db){
         assert.equal(null, err);
         db.collection('user_accounts').findOne({"_id": ObjectID(id)}, (function(err, result) {
                 if (err) {
-                    result.send('Unable to fetch Accounts');
-                }
                 response.render('data.hbs', {
                     result: result.log
                 });
-            })
-        )})
+                } else if (history.length  === 0){
+                	response.render('empty-data.hbs', {
+                		message: 'You have not made any transactions yet.'
+                	})
+                } else {
+                response.render('data.hbs', {
+                    result: result.log
+                });
+            }
+        }))
+    })
 });
 
 

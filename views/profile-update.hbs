@@ -55,6 +55,7 @@
                 <p>Full Name: {{firstname}} {{lastname}}</p>
                 <p>{{balance}}</p>
                 <p>{{cashbalance}}</p>
+                <p>{{message}}</p>
       				</div>
     			</div>
   			</div>
@@ -67,8 +68,8 @@
       				</h2>
     			</div>
     			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      				<div class="card-body" style="margin-left: 34%">
-			
+              <div class="card-body" style="margin-left: 34%">
+      
               <form action='/profile-update', method='POST' style="width: 45%;">
 <!--                   <div class="form-group">
                     <label for="fname">First Name</label>
@@ -95,7 +96,7 @@
                     <label for="npswd"> Confirm password</label>
                     <input type="password" class="form-control" id="conpassword" name="conpassword">
                   </div>
-  
+
       					<!-- Button trigger modal -->
 						<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-toggle="modal" data-target="#Modal">
   							Save changes
@@ -132,7 +133,7 @@
 
 	<footer class="footer">
       	<div class="container">
-        	<span class="text-muted">copyright 2019.</span>
+        	<span class="text-muted">Copyright 2019.</span>
       	</div>
     </footer>
 

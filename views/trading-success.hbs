@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>trading</title>
+	<title>Trading</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -39,13 +39,8 @@
   
 	<div style="height: 4rem;">#</div>
 
-
-	<div class="container">
-
-<div class="mx-auto" style="max-width: 800px;">
-
-
-<!-- TradingView Widget BEGIN -->
+<div class="mx-auto" style="max-width: 100%;">
+  <!-- TradingView Widget BEGIN -->
 <div class="tradingview-widget-container">
   <div class="tradingview-widget-container__widget"></div>
   <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com" rel="noopener" target="_blank"><span class="blue-text"></span></a></div>
@@ -81,6 +76,11 @@
   </script>
 </div>
 <!-- TradingView Widget END -->
+	<div class="container">
+</div>
+<div class="mx-auto" style="max-width: 800px;">
+
+
   <!-- Button trigger modal -->
   <form action="/trading-success-holdings" method="POST"> 
 <button type="button" class="btn btn-outline-secondary btn-sm" style="float:left;" data-toggle="modal" data-target="#balanceModal">
@@ -98,8 +98,8 @@
         </button>
       </div>
       <div class="modal-body">
-         <br>
          {{head}}
+         <br>
          {{balance}}
       </div>
       <div class="modal-footer">
@@ -196,24 +196,22 @@
         </div> -->
       </div>
     </form>
+
   </div>
-</div>
-
-
-
-</div>
-
 <br>
-
-
-
-
-
-
-
 <p>Use the tool below to search for stocks</p>
+</div>
+
+
+
+</div>
+
+
+
+
+
     <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container" style="margin-top: 4rem;">
+    <div class="tradingview-widget-container" style="margin-top: 0rem;">
       <div id="tradingview_52b8e"></div>
       <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text"></span></a></div>
   
