@@ -52,8 +52,9 @@
     			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       				<div class="card-body">
         				<p>Username: {{username}}</p>
-                <p>Last Name: {{lastname}}</p>
-                <p>First Name: {{firstname}}</p>
+                <p>Full Name: {{firstname}} {{lastname}}</p>
+                <p>{{balance}}</p>
+                <p>{{cashbalance}}</p>
                 <p>{{message}}</p>
       				</div>
     			</div>
@@ -62,36 +63,40 @@
     			<div class="card-header" id="headingTwo">
       				<h2 class="mb-0">
         				<button class="btn btn-outline-secondary btn-sm collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-         	 				Change My Profile
+         	 				Change My Password
         				</button>
       				</h2>
     			</div>
     			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      				<div class="card-body">
-			
-						<form>
-      						<div class="form-group">
-      							<label for="fname">First Name</label>
-      							<input type="text" id="firstname" name="firstname" value={{firstname}}>
-    						</div>
-      						<div class="form-group">
-      							<label for="lname">Last Name</label>
-      							<input type="text" id="lastname" name="lastname" value={{lastname}}>
-      						</div>
-      						<div class="form-group">
-      							<label for="pswd"> Current password</label>
-      							<input type="password" id="curpassword" name="curpassword"><br>
-      							<small>if you want to change your password, you have to enter your old password correctly</small>
-      						</div>
-      						<div class="form-group">
-      							<label for="npswd"> New password</label>
-      							<input type="password" id="newpassword" name="newpassword">
-      						</div>
+              <div class="card-body" style="margin-left: 34%">
+      
+              <form action='/profile-update', method='POST' style="width: 45%;">
+<!--                   <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" value={{firstname}}>
+                </div>
+                  <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" value={{lastname}}>
+                  </div>
+                  <div class="form-group">
+                    <label for="username">User Name</label>
+                    <input type="text" class="form-control" id="username" name="username" value={{username}}>
+                  </div> -->
+                  <div class="form-group">
+                    <label for="pswd"> Current password</label>
+                    <input type="password" class="form-control" id="curpassword" name="curpassword"><br>
+                    <small>If you want to update your profile, you have to enter your current password correctly</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="npswd"> New password</label>
+                    <input type="password" class="form-control" id="newpassword" name="newpassword">
+                  </div>
                   <div class="form-group">
                     <label for="npswd"> Confirm password</label>
-                    <input type="password" id="conpassword" name="conpassword">
+                    <input type="password" class="form-control" id="conpassword" name="conpassword">
                   </div>
-      					</form>
+
       					<!-- Button trigger modal -->
 						<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-toggle="modal" data-target="#Modal">
   							Save changes
@@ -112,7 +117,6 @@
       								</div>
       								<div class="modal-footer">
         								<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-dismiss="modal">Close</button>
-                      <form action='/profile-update', method='POST'>
         								<button type="submit" class="btn btn-outline-secondary btn-sm collapsed">Save changes</button>
                       </form>
       								</div>
@@ -129,7 +133,7 @@
 
 	<footer class="footer">
       	<div class="container">
-        	<span class="text-muted">copyright 2019.</span>
+        	<span class="text-muted">Copyright 2019.</span>
       	</div>
     </footer>
 

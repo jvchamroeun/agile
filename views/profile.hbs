@@ -52,8 +52,9 @@
     			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       				<div class="card-body">
         				<p>Username: {{username}}</p>
-                <p>Last Name: {{lastname}}</p>
-                <p>First Name: {{firstname}}</p>
+                <p>Full Name: {{firstname}} {{lastname}}</p>
+                <p>{{balance}}</p>
+                <p>{{cashbalance}}</p>
       				</div>
     			</div>
   			</div>
@@ -61,39 +62,40 @@
     			<div class="card-header" id="headingTwo">
       				<h2 class="mb-0">
         				<button class="btn btn-outline-secondary btn-sm collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-         	 				Change My Profile
+         	 				Change My Password
         				</button>
       				</h2>
     			</div>
     			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      				<div class="card-body">
+      				<div class="card-body" style="margin-left: 34%">
 			
-            <form>
-                                    <div class="form-group">
-                                        <label for="firstname">First Name</label>
-                                        <input type="text" name='firstname' id="firstname" value={{firstname}} placeholder="Must be 3-30 characters long and must only contain letters.">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="lastname">Last Name</label>
-                                        <input type="text" name='lastname' id="lastname" value={{lastname}} placeholder="Must be 3-30 characters long and must only contain letters.">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="username">Username</label>
-                                        <input type="text" name='username' id="username" placeholder="Must have 5-15 characters and may only be alphanumeric.">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input type="password" name='password' id="password" placeholder="Must have 5-15 characters and may only be alphanumeric.">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="confirm_password">Current Password</label>
-                                        <input type="password" name='current_password' id="current_password" placeholder="Current Password">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="confirm_password">Confirm Password</label>
-                                        <input type="password" name='confirm_password' id="confirm_password" placeholder="Confirm Password">
-                                    </div>
-                </form>
+              <form action='/profile-update', method='POST' style="width: 45%;">
+<!--                   <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" value={{firstname}}>
+                </div>
+                  <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" value={{lastname}}>
+                  </div>
+                  <div class="form-group">
+                    <label for="username">User Name</label>
+                    <input type="text" class="form-control" id="username" name="username" value={{username}}>
+                  </div> -->
+                  <div class="form-group">
+                    <label for="pswd"> Current password</label>
+                    <input type="password" class="form-control" id="curpassword" name="curpassword"><br>
+                    <small>If you want to update your profile, you have to enter your current password correctly</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="npswd"> New password</label>
+                    <input type="password" class="form-control" id="newpassword" name="newpassword">
+                  </div>
+                  <div class="form-group">
+                    <label for="npswd"> Confirm password</label>
+                    <input type="password" class="form-control" id="conpassword" name="conpassword">
+                  </div>
+  
       					<!-- Button trigger modal -->
 						<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-toggle="modal" data-target="#Modal">
   							Save changes
@@ -114,7 +116,6 @@
       								</div>
       								<div class="modal-footer">
         								<button type="button" class="btn btn-outline-secondary btn-sm collapsed" data-dismiss="modal">Close</button>
-                      <form action='/profile', method='POST'>
         								<button type="submit" class="btn btn-outline-secondary btn-sm collapsed">Save changes</button>
                       </form>
       								</div>
