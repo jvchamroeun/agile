@@ -68,6 +68,7 @@ const app = require('../project');
 const utils = require('../utils');
 
 
+
 var agent = chai.request.agent(app);
 describe("GET /trading-success", function () {
     after(function (done) {
@@ -117,6 +118,76 @@ describe("GET /history", function () {
             });
     });
 });
+
+
+
+var agent = chai.request.agent(app);
+describe("GET /profile and update password", function () {
+    after(function (done) {
+        done();
+    });
+
+
+    it("Successful log in", function (done) {
+        agent
+            .post("/login")
+            .send({
+                _method: "post",
+                username: "MaxiMaxr",
+                password: "apple12345"})
+            .then(function (res) {
+                return agent.get("/profile")
+                    .then(function (res) {
+                        var exp = "/profile";
+                        expect(res.req.path).to.equal(exp);
+                        expect(res).to.have.status(200);
+                        done();
+                    });
+
+            });
+    });
+});
+
+
+// var agent = chai.request.agent(app);
+// describe("GET /profile and update password", function () {
+//     after(function (done) {
+//         done();
+//     });
+//
+//
+//     it("Successful log in", function (done) {
+//         agent
+//             .post("/login")
+//             .send({
+//                 _method: "post",
+//                 username: "MaxiMaxr",
+//                 password: "jason"
+//             })
+//             .then(function (res) {
+//                 return agent.get("/profile")
+//                     .then(function (res) {
+//                         return agent.post("/profile-update")
+//                             .send({
+//                                 _method: "post",
+//                                 curpassword: "jason",
+//                                 newpassword: "apple12345",
+//                                 conpassword: "apple12345"
+//                             })
+//                             .then(function (res){
+//                                 // var exp = "/profile-update";
+//                                 // expect(res.req.path).to.equal(exp);
+//                                 // expect(res).to.have.status(200);
+//
+//                                 return agent.get("/logout")
+//                                     .then(function (res){
+//                                         done();
+//                                     });
+//                             });
+//                     });
+//             });
+//     });
+// });
 
 describe('GET /', function () {
     it("should return webpage with title of 'Welcome to the login page.' GET /", function (done) {

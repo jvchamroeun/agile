@@ -144,7 +144,8 @@ app.post('/login-fail',
 passport.use(new LocalStrategy(
 
     function(username, password, done) {
-        utils.getDb().collection('user_accounts').findOne({ username: username }, function (err, user) {
+        // utils.getDb().collection('user_accounts').findOne({ username: username }, function (err, user) {
+        user_account.findOne({ username: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
             // if (user.password != password) { return done(null, false); }
@@ -155,7 +156,7 @@ passport.use(new LocalStrategy(
                     return done(null, false);
                 }
             });
-            return done(null, user);
+            // return done(null, user);
         });
     }
 ));
@@ -1014,9 +1015,9 @@ function isAdmin(request, response, next) {
     }
 }
 
-// listen to port 8080
-app.listen(8080, () => {
-    console.log('Server is up on port 8080');
+// listen to port 3000
+app.listen(3000, () => {
+    console.log('Server is up on port 3000');
     utils.init();
 });
 
